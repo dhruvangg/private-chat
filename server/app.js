@@ -28,7 +28,7 @@ const io = new Server(server, {
     transports: ["websocket"]
 });
 
-const mongoURI = 'mongodb+srv://dhruvang:dhruvang4458@cluster0.h8e6z.mongodb.net/chatApp?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = ''
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
