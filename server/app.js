@@ -58,9 +58,7 @@ app.post('/api/room/join', (req, res) => {
     const { username, roomId } = req.body
 
     const room = RoomSchema.findOne({ roomId })
-    .then((room) => {
-        console.log('room', room);
-        
+    .then((room) => {        
         if(!room.users) {
             room.users = [username]
         } else {
@@ -100,9 +98,7 @@ io.on('connection', (socket) => {
         if (!socket.rooms.has(roomId)) {
             socket.join(roomId);
         }
-        // await RoomSchema.updateOne({ roomId }, { $push: { messages: { username, message, timestamp } } });
-        console.log(socket.rooms, roomId, username, message, timestamp)
-        // io.sockets.emit('receive-message', { username, message, timestamp });
+        await RoomSchema.updateOne({ roomId }, { $push: { messages: { username, message, timestamp } } });
         io.to(roomId).emit('receive-message', { username, message, timestamp });
         // socket.broadcast.emit('receive-message', { message, timestamp });
     })

@@ -1,7 +1,8 @@
-import React, { createContext, useEffect, useMemo, useRef, useState } from "react";
+// import axios from "axios";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
-export const SocketContext = createContext<React.MutableRefObject<any>>(null)
+export const SocketContext = createContext<React.MutableRefObject<Object>>({});
 
 export const useSocket = () => {
     return React.useContext(SocketContext)
@@ -9,6 +10,12 @@ export const useSocket = () => {
 
 type SocketProviderProps = {
     children: React.ReactNode
+}
+
+type MessagesType = {
+    message: string,
+    username: string,
+    timestamp: number
 }
 
 export default function SocketProvider({ children }: SocketProviderProps) {
@@ -19,15 +26,23 @@ export default function SocketProvider({ children }: SocketProviderProps) {
         reconnectionAttempts: 5,
         reconnectionDelay: 1000,
     }))
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState<MessagesType[]>([])
     useEffect(() => {
+
+        // const fetchMessages = () => {
+        //     axios.get('http://192.168.1.12:3000/api/room/messages')
+        //     .then((res) => setMessages(res.data.messages))
+        //     .catch((err) => console.log(err))
+        // }
+        // fetchMessages()
+
         socket.connect();
         socket.on('connect', () => {
             console.log('Connected to server');
         })
         socket.on('receive-message', (data: any) => {
             console.log('receive-message', data);
-            setMessages([...messages, data])
+            setMessages((prevMessages) => [...prevMessages, data])
         })
 
         socket.on('user-joined', (data: any) => {
@@ -50,7 +65,7 @@ export default function SocketProvider({ children }: SocketProviderProps) {
 
     const joinRoomRequest = (roomId: string, username: string) => socket.emit('join-room', { roomId, username })
 
-    console.log('rerender')
+    console.log('rerender', messages)
     return (
         <SocketContext.Provider value={{ socket, messages, joinRoomRequest }}>
             {children}
