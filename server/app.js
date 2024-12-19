@@ -6,6 +6,7 @@ const { Server } = require('socket.io');
 const mongoose = require('mongoose');
 const RoomSchema = require('./models/rooms');
 const bodyParser = require('body-parser');
+require('dotenv').config()
 
 const app = express();
 var corsOptions = {
@@ -28,7 +29,7 @@ const io = new Server(server, {
     transports: ["websocket"]
 });
 
-const mongoURI = 'mongodb+srv://dhruvang:dhruvang4458@cluster0.h8e6z.mongodb.net/chatApp?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
