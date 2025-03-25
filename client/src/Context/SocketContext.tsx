@@ -2,7 +2,13 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
-export const SocketContext = createContext<React.MutableRefObject<Object>>({});
+type SocketContextType = {
+    socket: any;
+    messages: MessagesType[];
+    joinRoomRequest: (roomId: string, username: string) => void;
+};
+
+export const SocketContext = createContext<SocketContextType | null>(null);
 
 export const useSocket = () => {
     return React.useContext(SocketContext)
@@ -19,7 +25,7 @@ type MessagesType = {
 }
 
 export default function SocketProvider({ children }: SocketProviderProps) {
-    const { current: socket }: any = useRef(io('http://192.168.1.12:3000', {
+    const { current: socket }: any = useRef(io(import.meta.env.VITE_BACKEND_URI, {
         autoConnect: false,
         transports: ["websocket"],
         reconnection: true,
@@ -28,14 +34,6 @@ export default function SocketProvider({ children }: SocketProviderProps) {
     }))
     const [messages, setMessages] = useState<MessagesType[]>([])
     useEffect(() => {
-
-        // const fetchMessages = () => {
-        //     axios.get('http://192.168.1.12:3000/api/room/messages')
-        //     .then((res) => setMessages(res.data.messages))
-        //     .catch((err) => console.log(err))
-        // }
-        // fetchMessages()
-
         socket.connect();
         socket.on('connect', () => {
             console.log('Connected to server');

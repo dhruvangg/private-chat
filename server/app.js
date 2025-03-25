@@ -44,6 +44,10 @@ mongoose.connection.on('error', (err) => {
     console.error('MongoDB connection error:', err.message);
 });
 
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
+
 app.post('/api/room/create', (req, res) => {
     const { username } = req.body
     const roomId = crypto.randomBytes(3).toString('hex').toUpperCase()

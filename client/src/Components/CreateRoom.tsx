@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router";
 import { useRoom } from "../Context/RoomContext";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import axiosInstance from "@/lib/axiosInstance";
 
 type FormData = {
     username: string
@@ -15,7 +15,7 @@ export default function CreateRoom() {
     const { addUser }: any = useRoom();
     const createRoom = (data: any) => {
         const { username } = data
-        axios.post('http://192.168.1.12:3000/api/room/create', {
+        axiosInstance.post('/api/room/create', {
             username
         }).then((res) => {
             const roomId = res?.data?.roomId

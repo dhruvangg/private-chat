@@ -1,6 +1,6 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { Label } from "./ui/label"
+import axiosInstance from "@/lib/axiosInstance"
 
 type UsersProps = {
     roomId: string
@@ -10,7 +10,7 @@ const Users = ({ roomId }: UsersProps) => {
     const [users, setUsers] = useState([])
     useEffect(() => {
         const fetchUsers = () => {
-            axios.get(`http://192.168.1.12:3000/api/room/${roomId}`)
+            axiosInstance.get(`/api/room/${roomId}`)
                 .then((res) => setUsers(res.data.users))
                 .catch((err) => console.log(err))
         }

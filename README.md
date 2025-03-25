@@ -1,121 +1,79 @@
-### **1. Frontend (React.js)**
+# Chat App Project Setup Guide
 
-- **Home Page:**
-    - Display two buttons:
-        1. **Create Room**: Opens a modal or form to enter a username. Generates a unique `roomId` and navigates to `/room/xxxx`.
-        2. **Join Room**: Opens a modal or form to enter a username and `roomId`. Validates `roomId` and navigates to `/room/xxxx`.
-- **Chatroom Page (`/room/:roomId`):**
-    - Show a real-time chat interface:
-        - List of messages.
-        - Input field for new messages.
-        - Display the username and `roomId`.
-- **Routing:**
-    - `/` → Home Page
-    - `/room/:roomId` → Chatroom Page
+## Backend Setup
 
----
+Follow these steps to set up and run the backend server:
 
-### **2. Backend (Express.js + MongoDB)**
+### 1. Configure Environment Variables
+Copy the `.env.example` file to `.env` and update the MongoDB URI:
 
-- **Endpoints:**
-    1. **POST /api/rooms/create**
-        - Generates a unique `roomId` and stores it in the database.
-        - Returns the `roomId`.
-    2. **POST /api/rooms/join**
-        - Validates the `roomId` against the database.
-        - Returns success or failure.
-- **WebSocket Communication (Socket.IO):**
-    - Handle real-time communication for:
-        - Broadcasting messages to all users in a room.
-        - Notifying users when someone joins or leaves the room.
-- **Database Models:**
-    - **Room:**
-        
-        ```
-        {
-          roomId: String, // Unique identifier
-          users: [String], // List of usernames
-          messages: [{ username: String, message: String, timestamp: Date }] // Chat history
-        }
-        
-        ```
-        
+```sh
+cp .env.example .env
+```
+
+Open `.env` in a text editor and update the `MONGODB_URI` variable accordingly.
+
+### 2. Navigate to the Server Directory
+Change into the `server` directory:
+
+```sh
+cd server
+```
+
+### 3. Install Dependencies
+Run the following command to install the required dependencies:
+
+```sh
+npm install
+```
+
+### 4. Start the Backend Server
+Launch the backend in development mode:
+
+```sh
+npm run dev
+```
+
+### 5. Connect Frontend to Backend
+Copy the provided backend URL and update the `BACKEND_URI` variable in the frontend `.env` file accordingly.
+
 
 ---
 
-### **3. Database (MongoDB)**
+## Frontend Setup
 
-- Store chat history and room information.
-- Collections:
-    - `rooms`: Stores `roomId`, active users, and chat messages.
+Follow these steps to set up and run the React project:
 
----
+## 1. Configure Environment Variables
+Copy the `.env.example` file to `.env` and update the backend URI as needed:
 
-### **4. Key Features**
+```sh
+cp .env.example .env
+```
 
-1. **Room Creation:**
-    - On the "Create Room" button click:
-        - Generate a random `roomId` using `uuid` or similar libraries.
-        - Save the room details to the database.
-        - Redirect to `/room/:roomId`.
-2. **Room Joining:**
-    - On the "Join Room" button click:
-        - Validate `roomId` from the backend.
-        - If valid, redirect to `/room/:roomId`.
-3. **Real-time Messaging:**
-    - Use `Socket.IO` to establish WebSocket communication.
-    - Events:
-        - `join-room`: Notify other users when someone joins.
-        - `send-message`: Broadcast messages to all users in the room.
-        - `leave-room`: Notify users when someone leaves.
-4. **Chatroom Persistence:**
-    - Store messages in the `rooms` collection for persistence.
+Open `.env` in a text editor and update the `BACKEND_URI` variable accordingly.
 
-### **Tech Stack**
+## 2. Navigate to the Client Directory
+Change into the `client` directory:
 
-- **Frontend**: React.js, React Router, Axios.
-- **Backend**: Node.js, Express.js, Socket.IO.
-- **Database**: MongoDB.
-- **Utilities**: `uuid` for generating unique room IDs.
+```sh
+cd client
+```
 
----
+## 3. Install Dependencies
+Run the following command to install the required dependencies:
 
-**Description:**  
-The **Anonymous Private Chat Application** allows users to create or join private chat rooms effortlessly—no login, no accounts, just instant messaging! This app is designed for fast, secure, and real-time communication with an emphasis on simplicity and user privacy.  
+```sh
+npm install
+```
 
-**Key Features:**  
-1. **Anonymous Chat**:  
-   - No account or sign-up required.  
-   - Users can enter a chatroom with just a username, keeping the experience completely anonymous.  
+## 4. Start the Development Server
+Launch the project in development mode:
 
-2. **Private Rooms**:  
-   - Create a unique chatroom with a randomly generated `roomId`.  
-   - Share the `roomId` with friends to join the conversation.  
+```sh
+npm run dev
+```
 
-3. **Real-Time Messaging**:  
-   - Powered by **Socket.IO** for seamless, instant communication.  
-   - Messages are broadcast to all users in the room with zero delay.  
+Your Frontend project should now be running. Open the provided URL in your browser to see the application.
 
-4. **Chat History Persistence**:  
-   - Chat history is saved in the database, ensuring that no message is lost if a user refreshes the page.  
-
-5. **User-Friendly Interface**:  
-   - Clean and responsive design using **Tailwind CSS** and **shadcn/ui** for a modern look.  
-   - Simple navigation with two core pages: Home and Chatroom.  
-
----
-
-**How It Works:**  
-1. **Home Page**:  
-   - Click **Create Room** to generate a new private chatroom and navigate to it.  
-   - Click **Join Room** to enter an existing chatroom using the `roomId`.  
-
-2. **Chatroom**:  
-   - Start chatting in real time! See all messages, the `roomId`, and the usernames of participants.  
-
----
-
-**Why Anonymous Chat?**  
-In today’s world, not everyone wants to go through the hassle of creating accounts or logging in just to chat. This app focuses on providing a **fast and frictionless experience**, making it perfect for casual, temporary conversations without compromising user privacy.  
-
-**#AnonymousChat #RealTimeMessaging #ReactJS #ExpressJS #SocketIO #WeekendProject #WebDevelopment**
+[System Design](System-Design.md)

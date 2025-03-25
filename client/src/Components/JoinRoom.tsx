@@ -3,8 +3,8 @@ import { useRoom } from "../Context/RoomContext";
 import { useNavigate } from "react-router";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import axios from "axios";
 import { useSocket } from "@/Context/SocketContext";
+import axiosInstance from "@/lib/axiosInstance";
 
 type FormData = {
     username: string,
@@ -19,7 +19,7 @@ export default function JoinRoom() {
 
     const joinRoom = (data: any) => {
         const { username, roomId } = data
-        axios.post('http://192.168.1.12:3000/api/room/join', {
+        axiosInstance.post('/api/room/join', {
             username, roomId
         }).then((res) => {
             const roomId = res?.data?.roomId
